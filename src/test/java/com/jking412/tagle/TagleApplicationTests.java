@@ -25,7 +25,9 @@ class TagleApplicationTests {
 
     @Test
     void contextLoads() throws Exception {
-
+        Scanner scanner = new Scanner(System.in);
+        int a = scanner.nextInt();
+        System.out.println(a);
 
 
 

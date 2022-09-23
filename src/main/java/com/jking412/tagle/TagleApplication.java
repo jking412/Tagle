@@ -1,6 +1,7 @@
 package com.jking412.tagle;
 
 import com.jking412.tagle.controller.TagleController;
+import com.jking412.tagle.entity.DailyTask;
 import com.jking412.tagle.utils.ExcelUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
