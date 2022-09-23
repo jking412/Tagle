@@ -46,24 +46,56 @@ public class DailyTaskController {
     }
 
     public static void deleteDailyTask(){
+        if (DailyTask.dailyTasks.size() == 0){
+            System.out.println("当前没有任务，请先添加任务");
+            startDailyTask();
+        }
         for(int i = 0 ; i < DailyTask.dailyTasks.size(); i++){
             System.out.println(i + ". " + DailyTask.dailyTasks.get(i).getTaskName());
         }
         System.out.println("请输入你要删除的任务序号:\n");
         Scanner scanner = new Scanner(System.in);
-        int index = scanner.nextInt();
+        int index;
+        try {
+            index = scanner.nextInt();
+        }catch (Exception e){
+            System.out.println("输入错误，请重新输入");
+            deleteDailyTask();
+            return;
+        }
+        if(index < 0 || index >= DailyTask.dailyTasks.size()) {
+            System.out.println("输入的任务不存在，请重新输入");
+            deleteDailyTask();
+            return;
+        }
         DailyTask.dailyTasks.remove(index);
         System.out.println("删除成功");
         startDailyTask();
     }
 
     public static void updateDailyTask(){
+        if (DailyTask.dailyTasks.size() == 0){
+            System.out.println("当前没有任务，请先添加任务");
+            startDailyTask();
+        }
         for(int i = 0 ; i < DailyTask.dailyTasks.size(); i++){
             System.out.println(i + ". " + DailyTask.dailyTasks.get(i).getTaskName());
         }
         System.out.println("请输入你要更新的任务序号:\n");
         Scanner scanner = new Scanner(System.in);
-        int index = scanner.nextInt();
+        int index;
+        try{
+            index = scanner.nextInt();
+        }catch (Exception e){
+            System.out.println("输入错误，请重新输入");
+            updateDailyTask();
+            return;
+        }
+        if(index < 0 || index >= DailyTask.dailyTasks.size()) {
+            System.out.println("输入的任务不存在，请重新输入");
+            updateDailyTask();
+            return;
+        }
         DailyTask dailyTask = DailyTask.dailyTasks.get(index);
         System.out.println("1. 更新任务名称");
         System.out.println("2. 更新任务状态");
@@ -90,7 +122,6 @@ public class DailyTaskController {
                     baseScore = 25;
                 }
                 String taskStatus = scanner.next();
-                boolean flag = true;
                 if (taskStatus.equals("1")) {
                     dailyTask.setTaskStatus("未完成");
                 } else if (taskStatus.equals("2")) {
@@ -99,19 +130,29 @@ public class DailyTaskController {
                 } else if (taskStatus.equals("3")) {
                     dailyTask.setTaskStatus("已放弃");
                 } else {
-                    flag = false;
                     System.out.println("输入错误，操作失败");
+                    return;
                 }
-                if(flag){
-                    Operation.operations.add(new Operation("更新任务状态", overScore - baseScore));
-                }
+                Operation.operations.add(new Operation("更新任务状态", overScore - baseScore));
             }else if(choice.equals("3")){
                 System.out.println("请输入新的任务奖励分数:\n");
-                int rewardScore = scanner.nextInt();
+                int rewardScore;
+                try {
+                    rewardScore = scanner.nextInt();
+                }catch (Exception e){
+                    System.out.println("分数应该是一个整数，操作失败");
+                    return;
+                }
                 dailyTask.setTaskGetScore(rewardScore);
             }else if(choice.equals("4")){
                 System.out.println("请输入新的任务惩罚分数:\n");
-                int punishmentScore = scanner.nextInt();
+                int punishmentScore;
+                try {
+                    punishmentScore = scanner.nextInt();
+                }catch (Exception e){
+                    System.out.println("分数应该是一个整数，操作失败");
+                    return;
+                }
                 dailyTask.setTaskLostScore(punishmentScore);
             }else if(choice.equals("5")){
                 System.out.println("请输入新的任务备注:\n");
@@ -122,7 +163,7 @@ public class DailyTaskController {
             }else{
                 System.out.println("输入错误，请重新输入");
                 System.out.println("请输入你的操作，按下操作前的序号即可:\n");
-                continue;
+                return;
             }
         }
         System.out.println("更新成功");
@@ -131,6 +172,10 @@ public class DailyTaskController {
 
     public static void showDailyTask(){
         ArrayList<DailyTask> dailyTasks = DailyTask.dailyTasks;
+        if(dailyTasks.size() == 0){
+            System.out.println("当前没有任务，请先添加任务");
+            startDailyTask();
+        }
         System.out.println("1. 显示所有任务");
         System.out.println("2. 显示未完成任务");
         System.out.println("3. 显示已完成任务");
@@ -167,21 +212,35 @@ public class DailyTaskController {
             System.out.println("输入错误，请重新输入");
             System.out.println("请输入你的操作，按下操作前的序号即可:\n");
             showDailyTask();
+            return;
         }
         startDailyTask();
     }
 
     public static void modifyDailyTask(){
+        if (DailyTask.dailyTasks.size() == 0) {
+            System.out.println("当前没有任务，请先添加任务");
+            startDailyTask();
+            return;
+        }
         for(int i = 0 ; i < DailyTask.dailyTasks.size(); i++){
             System.out.println(i+". "+DailyTask.dailyTasks.get(i).toString());
         }
         System.out.println("请输入你要修改的任务序号:\n");
         Scanner scanner = new Scanner(System.in);
-        int choice = scanner.nextInt();
+        int choice;
+        try {
+            choice = scanner.nextInt();
+        }catch (Exception e){
+            System.out.println("输入错误，任务序号应该是一个整数");
+            modifyDailyTask();
+            return;
+        }
         if(choice < 0 || choice >= DailyTask.dailyTasks.size()){
             System.out.println("输入错误，请重新输入");
             System.out.println("请输入你的操作，按下操作前的序号即可:\n");
             modifyDailyTask();
+            return;
         }
         DailyTask dailyTask = DailyTask.dailyTasks.get(choice);
         System.out.println("请输入新的任务状态:\n");
@@ -210,9 +269,11 @@ public class DailyTaskController {
         if(flag){
             Operation.operations.add(new Operation("更新任务状态", overScore - baseScore));
             System.out.println("更新成功");
+            startDailyTask();
         }else{
             System.out.println("更新失败");
             modifyDailyTask();
+            return;
         }
 
     }

@@ -14,4 +14,14 @@ public class DateUtils {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(new Date(date.getTime() + 60 * 60 * 24 * 1000L * day));
     }
+
+    public static boolean checkDate(String date){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try{
+            sdf.parse(date);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
 }
