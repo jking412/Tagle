@@ -40,6 +40,7 @@ public class DefinedScoreController {
         int score = scanner.nextInt();
         DefinedScore.definedScores.add(new DefinedScore(content, score));
         System.out.println("添加成功");
+        startDefinedScore();
     }
 
     public static void deleteDefinedScore(){
@@ -51,6 +52,7 @@ public class DefinedScoreController {
         int index = scanner.nextInt();
         DefinedScore.definedScores.remove(index);
         System.out.println("删除成功");
+        startDefinedScore();
     }
 
     public static void updateDefinedScore(){
@@ -89,12 +91,14 @@ public class DefinedScoreController {
             System.out.println("请输入你的操作，按下操作前的序号即可\n");
             updateDefinedScore();
         }
+        startDefinedScore();
     }
 
     public static void showDefinedScore(){
         for(int i = 0 ; i < DefinedScore.definedScores.size(); i++){
             System.out.println(i + ". " + DefinedScore.definedScores.get(i));
         }
+        startDefinedScore();
     }
 
     public static void modifyDefinedScore(){
@@ -104,7 +108,7 @@ public class DefinedScoreController {
         }
         System.out.println("选择完成项:\n");
         int index = scanner.nextInt();
-        System.out.println(DefinedScore.definedScores.get(index));
         Operation.operations.add(new Operation(DefinedScore.definedScores.get(index).getScoreName(), DefinedScore.definedScores.get(index).getScore()));
+        startDefinedScore();
     }
 }

@@ -1,7 +1,10 @@
 package com.jking412.tagle.utils;
 
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.read.listener.PageReadListener;
+import com.alibaba.excel.write.metadata.WriteSheet;
+import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
 import com.jking412.tagle.entity.DailyTask;
 import com.jking412.tagle.entity.DefinedScore;
 import com.jking412.tagle.entity.HabitTask;
@@ -48,8 +51,6 @@ public class ExcelUtils {
             rowDailyTask.createCell(3).setCellValue("奖励积分");
             rowDailyTask.createCell(4).setCellValue("损失积分");
             rowDailyTask.createCell(5).setCellValue("备注");
-            // 让列宽随着导出的列长自动适应
-            autoSize(sheetDailyTask, DailyTask.sheetLength);
 
 
             Sheet sheetHabitTask = workBook.createSheet("HabitTask");
@@ -63,7 +64,6 @@ public class ExcelUtils {
             rowHabitTask.createCell(6).setCellValue("奖励积分");
             rowHabitTask.createCell(7).setCellValue("损失积分");
             rowHabitTask.createCell(8).setCellValue("备注");
-            autoSize(sheetHabitTask,HabitTask.sheetLength);
 
 
             Sheet sheetDefinedScore = workBook.createSheet("DefinedScore");
@@ -72,7 +72,6 @@ public class ExcelUtils {
             rowDefinedScore.createCell(1).setCellValue("积分");
             rowDefinedScore.createCell(2).setCellValue("完成次数");
             rowDefinedScore.createCell(3).setCellValue("备注");
-            autoSize(sheetDefinedScore,DefinedScore.sheetLength);
 
 
             Sheet sheetOperation = workBook.createSheet("Operation");
@@ -82,7 +81,6 @@ public class ExcelUtils {
             rowOperation.createCell(2).setCellValue("改变的积分");
             rowOperation.createCell(3).setCellValue("剩余积分");
             rowOperation.createCell(4).setCellValue("备注");
-            autoSize(sheetOperation,Operation.sheetLength);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -95,15 +93,32 @@ public class ExcelUtils {
         }
     }
 
-    public static void saveAllExcel(){
-        saveExcel("DailyTask",DailyTask.class,DailyTask.dailyTasks);
-        saveExcel("HabitTask",HabitTask.class,HabitTask.habitTasks);
-        saveExcel("DefinedScore",DefinedScore.class,DefinedScore.definedScores);
-        saveExcel("Operation",Operation.class,Operation.operations);
-    }
 
-    private static void saveExcel(String sheetName,Class<?> Class,ArrayList<?> list){
-        EasyExcel.write(excelName,Class).sheet(sheetName).doWrite(list);
+    public static void saveExcel(){
+        try(ExcelWriter excelWriter = EasyExcel.write(excelName).registerWriteHandler(new LongestMatchColumnWidthStyleStrategy()).build()){
+            WriteSheet writeSheet = EasyExcel.writerSheet(0, "DailyTask").head(DailyTask.class).build();
+            excelWriter.write(DailyTask.dailyTasks, writeSheet);
+            writeSheet = EasyExcel.writerSheet(1, "HabitTask").head(HabitTask.class).build();
+            excelWriter.write(HabitTask.habitTasks, writeSheet);
+            writeSheet = EasyExcel.writerSheet(2, "DefinedScore").head(DefinedScore.class).build();
+            excelWriter.write(DefinedScore.definedScores, writeSheet);
+            writeSheet = EasyExcel.writerSheet(3, "Operation").head(Operation.class).build();
+            excelWriter.write(Operation.operations, writeSheet);
+        }
+        Workbook workBook = null;
+        try {
+            workBook = new XSSFWorkbook(excelName);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+//        Sheet sheet = workBook.getSheet("DailyTask");
+//        autoSize(sheet,DailyTask.sheetLength);
+//        sheet = workBook.getSheet("HabitTask");
+//        autoSize(sheet,HabitTask.sheetLength);
+//        sheet = workBook.getSheet("DefinedScore");
+//        autoSize(sheet,DefinedScore.sheetLength);
+//        sheet = workBook.getSheet("Operation");
+//        autoSize(sheet,Operation.sheetLength);
     }
 
 
@@ -111,7 +126,7 @@ public class ExcelUtils {
         // 让列宽随着导出的列长自动适应
         for (int i = 0; i < len; i++) {
             // 调整每一列宽度
-            sheet.autoSizeColumn((short) i);
+            sheet.autoSizeColumn(i);
             // 解决自动设置列宽中文失效的问题，单个单元格的最大列宽为255个字符
             int maxWith = 255 * 256;
             int newWidth = sheet.getColumnWidth(i) * 17 / 10;

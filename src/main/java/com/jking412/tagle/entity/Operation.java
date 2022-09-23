@@ -9,12 +9,14 @@ import com.jking412.tagle.utils.ExcelUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Operation {
 
     @ExcelProperty(value = "操作时间", index = 0)
@@ -38,10 +40,14 @@ public class Operation {
     public static ArrayList<Operation> operations;
 
     public Operation(String operation, int changedScore){
+        if(operations.size() > 0){
+            this.leftScore = operations.get(operations.size() - 1).getLeftScore();
+        }
         this.Date = DateUtils.getDate();
         this.operation = operation;
         this.changedScore = changedScore;
         this.leftScore += changedScore;
+        this.remark = "";
     }
 
     public static void readSheet(){
@@ -51,6 +57,5 @@ public class Operation {
 
     public static void addOperation(Operation operation){
         operations.add(operation);
-
     }
 }

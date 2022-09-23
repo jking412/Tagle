@@ -32,7 +32,7 @@ public class TagleController {
             }else if(input.equals("5")) {
 
                 System.out.println("感谢使用Tagle，再见");
-                ExcelUtils.saveAllExcel();
+                ExcelUtils.saveExcel();
                 break;
             }else {
                 System.out.println("输入错误，请重新输入");

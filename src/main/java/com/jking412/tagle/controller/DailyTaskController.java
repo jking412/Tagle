@@ -25,7 +25,9 @@ public class DailyTaskController {
             updateDailyTask();
         }else if(choice.equals("4")) {
             showDailyTask();
-        }else if(choice.equals("5")) {
+        }else if(choice.equals("5")){
+            modifyDailyTask();
+        }else if(choice.equals("6")) {
             return;
         }else{
             System.out.println("输入错误，请重新输入");
@@ -52,6 +54,7 @@ public class DailyTaskController {
         int index = scanner.nextInt();
         DailyTask.dailyTasks.remove(index);
         System.out.println("删除成功");
+        startDailyTask();
     }
 
     public static void updateDailyTask(){
@@ -87,6 +90,7 @@ public class DailyTaskController {
                     baseScore = 25;
                 }
                 String taskStatus = scanner.next();
+                boolean flag = true;
                 if (taskStatus.equals("1")) {
                     dailyTask.setTaskStatus("未完成");
                 } else if (taskStatus.equals("2")) {
@@ -95,9 +99,12 @@ public class DailyTaskController {
                 } else if (taskStatus.equals("3")) {
                     dailyTask.setTaskStatus("已放弃");
                 } else {
+                    flag = false;
                     System.out.println("输入错误，操作失败");
                 }
-                Operation.operations.add(new Operation("更新任务状态", overScore - baseScore));
+                if(flag){
+                    Operation.operations.add(new Operation("更新任务状态", overScore - baseScore));
+                }
             }else if(choice.equals("3")){
                 System.out.println("请输入新的任务奖励分数:\n");
                 int rewardScore = scanner.nextInt();
@@ -118,7 +125,8 @@ public class DailyTaskController {
                 continue;
             }
         }
-
+        System.out.println("更新成功");
+        startDailyTask();
     }
 
     public static void showDailyTask(){
@@ -160,6 +168,53 @@ public class DailyTaskController {
             System.out.println("请输入你的操作，按下操作前的序号即可:\n");
             showDailyTask();
         }
+        startDailyTask();
+    }
+
+    public static void modifyDailyTask(){
+        for(int i = 0 ; i < DailyTask.dailyTasks.size(); i++){
+            System.out.println(i+". "+DailyTask.dailyTasks.get(i).toString());
+        }
+        System.out.println("请输入你要修改的任务序号:\n");
+        Scanner scanner = new Scanner(System.in);
+        int choice = scanner.nextInt();
+        if(choice < 0 || choice >= DailyTask.dailyTasks.size()){
+            System.out.println("输入错误，请重新输入");
+            System.out.println("请输入你的操作，按下操作前的序号即可:\n");
+            modifyDailyTask();
+        }
+        DailyTask dailyTask = DailyTask.dailyTasks.get(choice);
+        System.out.println("请输入新的任务状态:\n");
+        System.out.println("1. 未完成");
+        System.out.println("2. 已完成");
+        System.out.println("3. 已放弃");
+        System.out.println("请输入你的操作，按下操作前的序号即可:\n");
+        int baseScore = 0;
+        int overScore = 0;
+        if(dailyTask.getTaskStatus().equals("已完成")) {
+            baseScore = 25;
+        }
+        String taskStatus = scanner.next();
+        boolean flag = true;
+        if (taskStatus.equals("1")) {
+            dailyTask.setTaskStatus("未完成");
+        } else if (taskStatus.equals("2")) {
+            dailyTask.setTaskStatus("已完成");
+            overScore = 25;
+        } else if (taskStatus.equals("3")) {
+            dailyTask.setTaskStatus("已放弃");
+        } else {
+            flag = false;
+            System.out.println("输入错误，操作失败");
+        }
+        if(flag){
+            Operation.operations.add(new Operation("更新任务状态", overScore - baseScore));
+            System.out.println("更新成功");
+        }else{
+            System.out.println("更新失败");
+            modifyDailyTask();
+        }
+
     }
 
 }

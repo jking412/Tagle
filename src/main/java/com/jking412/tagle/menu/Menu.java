@@ -4,11 +4,17 @@ import java.io.*;
 import java.util.Scanner;
 
 public class Menu {
-
+    public static String defaultBanner = " _________  ________  ________  ___       _______      \n" +
+            "|\\___   ___\\\\   __  \\|\\   ____\\|\\  \\     |\\  ___ \\     \n" +
+            "\\|___ \\  \\_\\ \\  \\|\\  \\ \\  \\___|\\ \\  \\    \\ \\   __/|    \n" +
+            "     \\ \\  \\ \\ \\   __  \\ \\  \\  __\\ \\  \\    \\ \\  \\_|/__  \n" +
+            "      \\ \\  \\ \\ \\  \\ \\  \\ \\  \\|\\  \\ \\  \\____\\ \\  \\_|\\ \\ \n" +
+            "       \\ \\__\\ \\ \\__\\ \\__\\ \\_______\\ \\_______\\ \\_______\\\n" +
+            "        \\|__|  \\|__|\\|__|\\|_______|\\|_______|\\|_______|\n";
     public static void outPutBanner() throws Exception{
         File file = new File("banner.txt");
         if(!file.exists()){
-            System.out.println("banner.txt not found!!!");
+            System.out.println(defaultBanner);
             return;
         }
         OutputStream outputStream = new PrintStream(System.out);
@@ -33,7 +39,8 @@ public class Menu {
         System.out.println("2.删除任务");
         System.out.println("3.修改任务");
         System.out.println("4.查看任务");
-        System.out.println("5.返回上一级");
+        System.out.println("5.修改完成情况");
+        System.out.println("6.返回上一级");
 //        System.out.println("请输入序号：");
     }
 
@@ -43,7 +50,8 @@ public class Menu {
         System.out.println("2.删除习惯");
         System.out.println("3.修改习惯");
         System.out.println("4.查看习惯");
-        System.out.println("5.返回上一级");
+        System.out.println("5.修改完成情况");
+        System.out.println("6.返回上一级");
 //        System.out.println("请输入序号：");
     }
 
