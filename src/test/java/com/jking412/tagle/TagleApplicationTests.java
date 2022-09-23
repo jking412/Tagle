@@ -4,6 +4,7 @@ import com.jking412.tagle.entity.DailyTask;
 import com.jking412.tagle.entity.Operation;
 import com.jking412.tagle.menu.Menu;
 import com.jking412.tagle.utils.DateUtils;
+import jdk.internal.util.xml.impl.Input;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
@@ -24,8 +25,6 @@ class TagleApplicationTests {
 
     @Test
     void contextLoads() throws Exception {
-        Operation operation = new Operation();
-        System.out.println(operation);
 
 
 
