@@ -1,6 +1,7 @@
 package com.jking412.tagle.controller;
 
 import com.jking412.tagle.entity.HabitTask;
+import com.jking412.tagle.entity.Operation;
 import com.jking412.tagle.menu.Menu;
 
 import java.util.Scanner;
@@ -20,7 +21,9 @@ public class HabitTaskController {
             updateHabitTask();
         }else if(choice.equals("4")) {
             showHabitTask();
-        }else if(choice.equals("5")) {
+        } else if (choice.equals("5")) {
+            modifyHabitTask();
+        } else if(choice.equals("6")) {
             return;
         }else{
             System.out.println("输入错误，请重新输入");
@@ -38,6 +41,7 @@ public class HabitTaskController {
         HabitTask habitTasks = new HabitTask(content, days);
         HabitTask.habitTasks.add(habitTasks);
         System.out.println("添加成功");
+        startHabitTask();
     }
 
     public static void deleteHabitTask(){
@@ -49,6 +53,7 @@ public class HabitTaskController {
         int index = scanner.nextInt();
         HabitTask.habitTasks.remove(index);
         System.out.println("删除成功");
+        startHabitTask();
     }
 
     public static void updateHabitTask(){
@@ -112,14 +117,42 @@ public class HabitTaskController {
             System.out.println("请输入你的操作，按下操作前的序号即可\n");
             updateHabitTask();
         }
+        startHabitTask();
     }
 
     public static void showHabitTask(){
         for(int i = 0 ; i < HabitTask.habitTasks.size(); i++){
-            System.out.println(i + ". " + HabitTask.habitTasks.get(i).getTaskName() + " " + HabitTask.habitTasks.get(i).getTargetDay()
-            + " " + HabitTask.habitTasks.get(i).getStartDate()+ " " + HabitTask.habitTasks.get(i).getEndDate()+ " " + HabitTask.habitTasks.get(i).getFinishedDayNum()
-            + " " + HabitTask.habitTasks.get(i).getUnFinishedDayNum() + " " + HabitTask.habitTasks.get(i).getTaskScore()
-            + " " + HabitTask.habitTasks.get(i).getTaskLostScore()+ " " + HabitTask.habitTasks.get(i).getTaskRemark());
+            System.out.println(i + ". " + HabitTask.habitTasks.get(i));
+        }
+        startHabitTask();
+    }
+
+    public static void modifyHabitTask(){
+        for (int i = 0; i < HabitTask.habitTasks.size(); i++) {
+            System.out.println(i + ". " + HabitTask.habitTasks.get(i).getTaskName());
+        }
+        System.out.println("请输入你要修改的习惯序号:\n");
+        Scanner scanner = new Scanner(System.in);
+        int index = scanner.nextInt();
+        HabitTask habitTask = HabitTask.habitTasks.get(index);
+        System.out.println("请输入选项前的序号，进行修改\n");
+        System.out.println("1. 坚持一天");
+        System.out.println("2. 放弃一天");
+        System.out.println("3. 返回上一级");
+        String choice = scanner.next();
+        if(choice.equals("1")) {
+            habitTask.setFinishedDayNum(habitTask.getFinishedDayNum() + 1);
+            Operation.operations.add(new Operation(habitTask.getTaskName(), habitTask.getTaskScore()));
+            System.out.println("你现在距离完成目标还有"+(habitTask.getTargetDay()-habitTask.getFinishedDayNum())+"天");
+        }else if (choice.equals("2")){
+            habitTask.setUnFinishedDayNum(habitTask.getUnFinishedDayNum()+1);
+            Operation.operations.add(new Operation(habitTask.getTaskName(), -habitTask.getTaskLostScore()));
+        } else if (choice.equals("3")) {
+            return;
+        }else{
+            System.out.println("输入错误，请重新输入");
+            System.out.println("请输入你的操作，按下操作前的序号即可\n");
+            modifyHabitTask();
         }
     }
 

@@ -28,22 +28,23 @@ public class OperationController {
 
     public static void showOperation(){
         for(int i = 0; i < Operation.operations.size(); i++){
-            System.out.println("序号：" + i + "  " + Operation.operations.get(i).getDate() + "  " + Operation.operations.get(i).getOperation()
-                    + "  " + Operation.operations.get(i).getChangedScore() + "  " + Operation.operations.get(i).getLeftScore()+ "  " + Operation.operations.get(i).getRemark());
+            System.out.println(i + ".  " + Operation.operations.get(i));
         }
+        startOperation();
     }
 
     public static void updateOperationRemark(){
         Scanner scanner = new Scanner(System.in);
         for(int i = 0; i < Operation.operations.size(); i++){
-            System.out.println("序号：" + i + "  " + Operation.operations.get(i).getOperation());
+            System.out.println(i + ".  " + Operation.operations.get(i).getOperation());
         }
         System.out.println("请输入你要修改备注的操作序号:\n");
         int index = scanner.nextInt();
-        System.out.println("请输入你要修改的备注:\n");
+        System.out.println("请输入你修改后的备注:\n");
         String remark = scanner.next();
         Operation.operations.get(index).setRemark(remark);
         System.out.println("修改成功");
+        startOperation();
     }
 
 }

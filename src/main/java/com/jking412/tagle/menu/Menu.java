@@ -33,7 +33,8 @@ public class Menu {
         System.out.println("2.删除任务");
         System.out.println("3.修改任务");
         System.out.println("4.查看任务");
-        System.out.println("5.返回上一级");
+        System.out.println("5.修改完成情况");
+        System.out.println("6.返回上一级");
 //        System.out.println("请输入序号：");
     }
 
@@ -43,7 +44,8 @@ public class Menu {
         System.out.println("2.删除习惯");
         System.out.println("3.修改习惯");
         System.out.println("4.查看习惯");
-        System.out.println("5.返回上一级");
+        System.out.println("5.修改完成情况");
+        System.out.println("6.返回上一级");
 //        System.out.println("请输入序号：");
     }
 

@@ -1,6 +1,7 @@
 package com.jking412.tagle;
 
 import com.jking412.tagle.entity.DailyTask;
+import com.jking412.tagle.entity.Operation;
 import com.jking412.tagle.menu.Menu;
 import com.jking412.tagle.utils.DateUtils;
 import org.apache.poi.hssf.usermodel.*;
@@ -23,7 +24,8 @@ class TagleApplicationTests {
 
     @Test
     void contextLoads() throws Exception {
-
+        Operation operation = new Operation();
+        System.out.println(operation);
 
 
 
