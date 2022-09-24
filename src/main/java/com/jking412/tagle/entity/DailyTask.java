@@ -5,6 +5,7 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.jking412.tagle.entity.readListener.DailyTaskReadListener;
+import com.jking412.tagle.status.DailyTaskStatus;
 import com.jking412.tagle.utils.DateUtils;
 import com.jking412.tagle.utils.ExcelUtils;
 import lombok.AllArgsConstructor;
@@ -28,8 +29,8 @@ public class DailyTask {
     @ExcelProperty(value = "任务", index = 1)
     private String taskName;
 
-    @ExcelProperty(value = "完成情况", index = 2)
-    private String taskStatus;
+    @ExcelProperty(value = "完成情况", index = 2, converter = com.jking412.tagle.common.DailyTaskConvert.class)
+    private DailyTaskStatus taskStatus;
 
     @ExcelProperty(value = "奖励积分", index = 3)
     private int taskGetScore;
@@ -50,7 +51,7 @@ public class DailyTask {
     public DailyTask(String taskName){
         this.date = DateUtils.getDate();
         this.taskName = taskName;
-        this.taskStatus = "未完成";
+        this.taskStatus = DailyTaskStatus.UNFINISHED;
         this.taskGetScore = 25;
         this.taskLostScore = 0;
         this.taskRemark = "";

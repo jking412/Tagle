@@ -3,6 +3,8 @@ package com.jking412.tagle.controller;
 import com.jking412.tagle.entity.DailyTask;
 import com.jking412.tagle.entity.Operation;
 import com.jking412.tagle.menu.Menu;
+import com.jking412.tagle.status.DailyTaskStatus;
+import com.jking412.tagle.utils.MenuUtils;
 import com.jking412.tagle.utils.TaskUtils;
 
 import java.util.ArrayList;
@@ -30,8 +32,7 @@ public class DailyTaskController {
         }else if(choice.equals("6")) {
             return;
         }else{
-            System.out.println("输入错误，请重新输入");
-            System.out.println("请输入你的操作，按下操作前的序号即可\n");
+            MenuUtils.errorMsg("请输入你的操作，按下操作前的序号即可:");
             startDailyTask();
         }
     }
@@ -59,12 +60,12 @@ public class DailyTaskController {
         try {
             index = scanner.nextInt();
         }catch (Exception e){
-            System.out.println("输入错误，请重新输入");
+            MenuUtils.errorMsg();
             deleteDailyTask();
             return;
         }
         if(index < 0 || index >= DailyTask.dailyTasks.size()) {
-            System.out.println("输入的任务不存在，请重新输入");
+            MenuUtils.errorMsg("输入的任务不存在，请重新输入");
             deleteDailyTask();
             return;
         }
@@ -87,12 +88,12 @@ public class DailyTaskController {
         try{
             index = scanner.nextInt();
         }catch (Exception e){
-            System.out.println("输入错误，请重新输入");
+            MenuUtils.errorMsg();
             updateDailyTask();
             return;
         }
         if(index < 0 || index >= DailyTask.dailyTasks.size()) {
-            System.out.println("输入的任务不存在，请重新输入");
+            MenuUtils.errorMsg("输入的任务不存在，请重新输入");
             updateDailyTask();
             return;
         }
@@ -112,9 +113,9 @@ public class DailyTaskController {
                 dailyTask.setTaskName(taskName);
             }else if(choice.equals("2")){
                 System.out.println("请输入新的任务状态:\n");
-                System.out.println("1. 未完成");
-                System.out.println("2. 已完成");
-                System.out.println("3. 已放弃");
+                System.out.println("0. 未完成");
+                System.out.println("1. 已完成");
+                System.out.println("2. 已放弃");
                 System.out.println("请输入你的操作，按下操作前的序号即可:\n");
                 int baseScore = 0;
                 int overScore = 0;
@@ -122,18 +123,18 @@ public class DailyTaskController {
                     baseScore = 25;
                 }
                 String taskStatus = scanner.next();
-                if (taskStatus.equals("1")) {
-                    dailyTask.setTaskStatus("未完成");
-                } else if (taskStatus.equals("2")) {
-                    dailyTask.setTaskStatus("已完成");
+                if (taskStatus.equals("0")) {
+                    dailyTask.setTaskStatus(DailyTaskStatus.UNFINISHED);
+                } else if (taskStatus.equals("1")) {
+                    dailyTask.setTaskStatus(DailyTaskStatus.FINISHED);
                     overScore = 25;
-                } else if (taskStatus.equals("3")) {
-                    dailyTask.setTaskStatus("已放弃");
+                } else if (taskStatus.equals("2")) {
+                    dailyTask.setTaskStatus(DailyTaskStatus.ABANDONED);
                 } else {
-                    System.out.println("输入错误，操作失败");
+                    MenuUtils.errorMsg("输入的任务状态不存在，请重新输入");
                     return;
                 }
-                Operation.operations.add(new Operation("更新任务状态", overScore - baseScore));
+                Operation.addOperation(new Operation("更新任务状态", overScore - baseScore));
             }else if(choice.equals("3")){
                 System.out.println("请输入新的任务奖励分数:\n");
                 int rewardScore;
@@ -244,9 +245,9 @@ public class DailyTaskController {
         }
         DailyTask dailyTask = DailyTask.dailyTasks.get(choice);
         System.out.println("请输入新的任务状态:\n");
-        System.out.println("1. 未完成");
-        System.out.println("2. 已完成");
-        System.out.println("3. 已放弃");
+        System.out.println("0. 未完成");
+        System.out.println("1. 已完成");
+        System.out.println("2. 已放弃");
         System.out.println("请输入你的操作，按下操作前的序号即可:\n");
         int baseScore = 0;
         int overScore = 0;
@@ -255,13 +256,13 @@ public class DailyTaskController {
         }
         String taskStatus = scanner.next();
         boolean flag = true;
-        if (taskStatus.equals("1")) {
-            dailyTask.setTaskStatus("未完成");
-        } else if (taskStatus.equals("2")) {
-            dailyTask.setTaskStatus("已完成");
+        if (taskStatus.equals("0")) {
+            dailyTask.setTaskStatus(DailyTaskStatus.UNFINISHED);
+        } else if (taskStatus.equals("1")) {
+            dailyTask.setTaskStatus(DailyTaskStatus.FINISHED);
             overScore = 25;
-        } else if (taskStatus.equals("3")) {
-            dailyTask.setTaskStatus("已放弃");
+        } else if (taskStatus.equals("2")) {
+            dailyTask.setTaskStatus(DailyTaskStatus.ABANDONED);
         } else {
             flag = false;
             System.out.println("输入错误，操作失败");
