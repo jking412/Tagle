@@ -4,8 +4,8 @@ package com.jking412.tagle.entity;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.jking412.tagle.entity.readListener.DailyTaskReadListener;
-import com.jking412.tagle.status.DailyTaskStatus;
+import com.jking412.tagle.entity.readlistener.DailyTaskReadListener;
+import com.jking412.tagle.tagleenum.DailyTaskStatus;
 import com.jking412.tagle.utils.DateUtils;
 import com.jking412.tagle.utils.ExcelUtils;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 @Data
 @NoArgsConstructor

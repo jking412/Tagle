@@ -2,7 +2,9 @@ package com.jking412.tagle.controller;
 
 import com.jking412.tagle.entity.DailyTask;
 import com.jking412.tagle.menu.Menu;
+import com.jking412.tagle.tagleenum.Message;
 import com.jking412.tagle.utils.ExcelUtils;
+import com.jking412.tagle.utils.MenuUtils;
 
 import java.util.Scanner;
 
@@ -18,7 +20,7 @@ public class TagleController {
         }
         System.out.println("\n");
         Menu.mainMenu();
-        System.out.println("请输入你的操作，按下操作前的序号即可:\n");
+        MenuUtils.outputMsg(Message.inputOrderMsg);
         while (scanner.hasNext()){
             String input = scanner.next();
             if(input.equals("1")){
@@ -35,11 +37,10 @@ public class TagleController {
                 ExcelUtils.saveExcel();
                 break;
             }else {
-                System.out.println("输入错误，请重新输入");
-                System.out.println("请输入你的操作，按下操作前的序号即可\n");
+                MenuUtils.outputMsg(Message.inputParseError);
             }
             Menu.mainMenu();
-            System.out.println("请输入你的操作，按下操作前的序号即可:");
+            MenuUtils.outputMsg(Message.inputOrderMsg);
         }
     }
 }

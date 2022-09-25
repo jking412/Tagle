@@ -2,8 +2,10 @@ package com.jking412.tagle.controller;
 
 import com.jking412.tagle.entity.Operation;
 import com.jking412.tagle.menu.Menu;
+import com.jking412.tagle.tagleenum.Message;
+import com.jking412.tagle.utils.MenuUtils;
+import com.jking412.tagle.utils.TaskUtils;
 
-import java.util.Map;
 import java.util.Scanner;
 
 public class OperationController {
@@ -20,15 +22,14 @@ public class OperationController {
         } else if(choice.equals("3")) {
             return;
         }else{
-            System.out.println("输入错误，请重新输入");
-            System.out.println("请输入你的操作，按下操作前的序号即可\n");
+            MenuUtils.outputMsg(Message.inputParseError);
             startOperation();
         }
     }
 
     public static void showOperation(){
         if(Operation.operations.size() == 0) {
-            System.out.println("暂无操作记录\n");
+            MenuUtils.outputMsg(Message.noContentMsg);
             return;
         }
         for(int i = 0; i < Operation.operations.size(); i++){
@@ -39,24 +40,19 @@ public class OperationController {
 
     public static void updateOperationRemark(){
         if(Operation.operations.size() == 0) {
-            System.out.println("暂无操作记录\n");
+            MenuUtils.outputMsg(Message.noContentMsg);
             return;
         }
         Scanner scanner = new Scanner(System.in);
         for(int i = 0; i < Operation.operations.size(); i++){
             System.out.println(i + ".  " + Operation.operations.get(i).getOperation());
         }
-        System.out.println("请输入你要修改备注的操作序号:\n");
-        int index = scanner.nextInt();
-        if(index >= Operation.operations.size()){
-            System.out.println("输入的操作不存在，请重新输入");
-            updateOperationRemark();
-            return;
-        }
+        MenuUtils.outputMsg(Message.inputOrderMsg);
+        int index = TaskUtils.readInt(0, Operation.operations.size() - 1);
         System.out.println("请输入你修改后的备注:\n");
         String remark = scanner.next();
         Operation.operations.get(index).setRemark(remark);
-        System.out.println("修改成功");
+        MenuUtils.outputMsg(Message.successMsg);
         startOperation();
     }
 

@@ -1,4 +1,4 @@
-package com.jking412.tagle.status;
+package com.jking412.tagle.tagleenum;
 
 public enum DailyTaskStatus {
     UNFINISHED(0),

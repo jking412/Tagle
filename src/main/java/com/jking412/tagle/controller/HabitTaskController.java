@@ -3,7 +3,10 @@ package com.jking412.tagle.controller;
 import com.jking412.tagle.entity.HabitTask;
 import com.jking412.tagle.entity.Operation;
 import com.jking412.tagle.menu.Menu;
+import com.jking412.tagle.tagleenum.Message;
 import com.jking412.tagle.utils.DateUtils;
+import com.jking412.tagle.utils.MenuUtils;
+import com.jking412.tagle.utils.TaskUtils;
 
 import java.util.Scanner;
 
@@ -27,8 +30,7 @@ public class HabitTaskController {
         } else if(choice.equals("6")) {
             return;
         }else{
-            System.out.println("输入错误，请重新输入");
-            System.out.println("请输入你的操作，按下操作前的序号即可\n");
+            MenuUtils.outputMsg(Message.inputParseError);
             startHabitTask();
         }
     }
@@ -38,26 +40,14 @@ public class HabitTaskController {
         System.out.println("请输入习惯任务内容:\n");
         String content = scanner.next();
         System.out.println("请输入坚持的目标天数:\n");
-        int days;
-        try{
-            days = scanner.nextInt();
-        } catch (Exception e) {
-            System.out.println("输入错误，请重新输入");
-            addHabitTask();
-            return;
-        }
-        if(days < 0){
-            System.out.println("目标天数不应该是负数，请重新输入");
-            addHabitTask();
-            return;
-        }
+        int days = TaskUtils.readInt(0, Integer.MAX_VALUE);
         HabitTask.habitTasks.add(new HabitTask(content, days));
-        System.out.println("添加成功");
+        MenuUtils.outputMsg(Message.successMsg);
     }
 
     public static void deleteHabitTask(){
         if(HabitTask.habitTasks.size() == 0){
-            System.out.println("当前没有习惯任务");
+            MenuUtils.outputMsg(Message.noContentMsg);
             startHabitTask();
             return;
         }
@@ -65,28 +55,16 @@ public class HabitTaskController {
         for(int i = 0 ; i < HabitTask.habitTasks.size(); i++){
             System.out.println(i + ". " + HabitTask.habitTasks.get(i).getTaskName());
         }
-        System.out.println("请输入你要删除的习惯任务序号:\n");
-        int index;
-        try {
-            index = scanner.nextInt();
-        }catch (Exception e){
-            System.out.println("输入错误，请重新输入");
-            deleteHabitTask();
-            return;
-        }
-        if(index < 0 || index >= HabitTask.habitTasks.size()){
-            System.out.println("习惯任务序号不存在，请重新输入");
-            deleteHabitTask();
-            return;
-        }
+        MenuUtils.outputMsg(Message.inputOrderMsg);
+        int index = TaskUtils.readInt(0, HabitTask.habitTasks.size() - 1);
         HabitTask.habitTasks.remove(index);
-        System.out.println("删除成功");
+        MenuUtils.outputMsg(Message.successMsg);
         startHabitTask();
     }
 
     public static void updateHabitTask(){
         if(HabitTask.habitTasks.size() == 0){
-            System.out.println("当前没有习惯任务");
+            MenuUtils.outputMsg(Message.successMsg);
             startHabitTask();
             return;
         }
@@ -94,20 +72,8 @@ public class HabitTaskController {
         for(int i = 0 ; i < HabitTask.habitTasks.size(); i++){
             System.out.println(i + ". " + HabitTask.habitTasks.get(i).getTaskName());
         }
-        System.out.println("请输入你要更新的习惯任务序号:\n");
-        int index;
-        try {
-            index = scanner.nextInt();
-        }catch (Exception e){
-            System.out.println("输入错误，请重新输入");
-            updateHabitTask();
-            return;
-        }
-        if(index < 0 || index >= HabitTask.habitTasks.size()){
-            System.out.println("习惯任务序号不存在，请重新输入");
-            updateHabitTask();
-            return;
-        }
+        MenuUtils.outputMsg(Message.inputOrderMsg);
+        int index = TaskUtils.readInt(0, HabitTask.habitTasks.size() - 1);
         System.out.println("1. 更新任务内容");
         System.out.println("2. 更新坚持的目标天数");
         System.out.println("3. 更新开始时间");
@@ -125,19 +91,7 @@ public class HabitTaskController {
             HabitTask.habitTasks.get(index).setTaskName(content);
         }else if(choice.equals("2")) {
             System.out.println("请输入新的坚持的目标天数:\n");
-            int days;
-            try{
-                days = scanner.nextInt();
-            } catch (Exception e) {
-                System.out.println("输入错误，请重新输入");
-                updateHabitTask();
-                return;
-            }
-            if(days < 0){
-                System.out.println("目标天数不应该是负数，请重新输入");
-                updateHabitTask();
-                return;
-            }
+            int days = TaskUtils.readInt(0, Integer.MAX_VALUE);
             HabitTask.habitTasks.get(index).setTargetDay(days);
         }else if(choice.equals("3")) {
             System.out.println("请输入新的开始时间,格式遵循 yyyy-MM-dd :\n");
@@ -159,68 +113,19 @@ public class HabitTaskController {
             HabitTask.habitTasks.get(index).setEndDate(endTime);
         }else if (choice.equals("5")) {
             System.out.println("请输入新的完成天数:\n");
-            int finishDay;
-            try{
-                finishDay = scanner.nextInt();
-            }catch (Exception e){
-                System.out.println("天数应该是一个大于等于零的整数");
-                updateHabitTask();
-                return;
-            }
-            if(finishDay < 0){
-                System.out.println("天数应该是一个大于等于零的整数");
-                updateHabitTask();
-                return;
-            }
+            int finishDay = TaskUtils.readInt(0, Integer.MAX_VALUE);
             HabitTask.habitTasks.get(index).setFinishedDayNum(finishDay);
         }else if (choice.equals("6")) {
             System.out.println("请输入新的未完成天数:\n");
-            int unfinishDay;
-            try {
-                unfinishDay = scanner.nextInt();
-            }catch (Exception e){
-                System.out.println("天数应该是一个大于等于零的整数");
-                updateHabitTask();
-                return;
-            }
-            if(unfinishDay < 0){
-                System.out.println("天数应该是一个大于等于零的整数");
-                updateHabitTask();
-                return;
-            }
+            int unfinishDay = TaskUtils.readInt(0, Integer.MAX_VALUE);
             HabitTask.habitTasks.get(index).setUnFinishedDayNum(unfinishDay);
         }else if (choice.equals("7")) {
             System.out.println("请输入新的奖励积分:\n");
-            int reward;
-            try {
-                reward = scanner.nextInt();
-            }catch (Exception e){
-                System.out.println("积分应该是一个大于等于零的整数");
-                updateHabitTask();
-                return;
-            }
-            if(reward < 0){
-                System.out.println("这是一个奖励积分，不应该是负数");
-                updateHabitTask();
-                return;
-            }
-
+            int reward = TaskUtils.readInt(0, Integer.MAX_VALUE);
             HabitTask.habitTasks.get(index).setTaskScore(reward);
         }else if (choice.equals("8")) {
             System.out.println("请输入新的损失积分:\n");
-            int loss;
-            try {
-                loss = scanner.nextInt();
-            }catch (Exception e){
-                System.out.println("积分应该是一个大于等于零的整数");
-                updateHabitTask();
-                return;
-            }
-            if(loss < 0){
-                System.out.println("这是一个损失积分，不应该是负数");
-                updateHabitTask();
-                return;
-            }
+            int loss = TaskUtils.readInt(0, Integer.MAX_VALUE);
             HabitTask.habitTasks.get(index).setTaskLostScore(loss);
         }else if (choice.equals("9")) {
             System.out.println("请输入新的备注:\n");
@@ -229,8 +134,7 @@ public class HabitTaskController {
         }else if (choice.equals("10")) {
             return;
         }else{
-            System.out.println("输入错误，请重新输入");
-            System.out.println("请输入你的操作，按下操作前的序号即可\n");
+            MenuUtils.outputMsg(Message.inputParseError);
             updateHabitTask();
             return;
         }
@@ -239,7 +143,7 @@ public class HabitTaskController {
 
     public static void showHabitTask(){
         if(HabitTask.habitTasks.size() == 0){
-            System.out.println("当前没有习惯任务");
+            MenuUtils.outputMsg(Message.noContentMsg);
             startHabitTask();
             return;
         }
@@ -253,21 +157,9 @@ public class HabitTaskController {
         for (int i = 0; i < HabitTask.habitTasks.size(); i++) {
             System.out.println(i + ". " + HabitTask.habitTasks.get(i).getTaskName());
         }
-        System.out.println("请输入你要修改的习惯序号:\n");
+        MenuUtils.outputMsg(Message.inputOrderMsg);
         Scanner scanner = new Scanner(System.in);
-        int index;
-        try {
-            index = scanner.nextInt();
-        }catch (Exception e){
-            System.out.println("不存在该习惯序号，请重新输入");
-            modifyHabitTask();
-            return;
-        }
-        if(index < 0 || index >= HabitTask.habitTasks.size()){
-            System.out.println("不存在该习惯序号，请重新输入");
-            modifyHabitTask();
-            return;
-        }
+        int index = TaskUtils.readInt(0, HabitTask.habitTasks.size() - 1);
         HabitTask habitTask = HabitTask.habitTasks.get(index);
         System.out.println("请输入选项前的序号，进行修改\n");
         System.out.println("1. 坚持一天");
@@ -276,20 +168,21 @@ public class HabitTaskController {
         String choice = scanner.next();
         if(choice.equals("1")) {
             habitTask.setFinishedDayNum(habitTask.getFinishedDayNum() + 1);
-            Operation.operations.add(new Operation(habitTask.getTaskName(), habitTask.getTaskScore()));
+            Operation.operations.add(new Operation("第"+index+"个习惯"+habitTask.getTaskName()
+                    +"你坚持了一天", habitTask.getTaskScore()));
             System.out.println("你现在距离完成目标还有"+(habitTask.getTargetDay()-habitTask.getFinishedDayNum())+"天");
         }else if (choice.equals("2")){
             habitTask.setUnFinishedDayNum(habitTask.getUnFinishedDayNum()+1);
-            Operation.operations.add(new Operation(habitTask.getTaskName(), -habitTask.getTaskLostScore()));
+            Operation.operations.add(new Operation("第"+index+"个习惯"+habitTask.getTaskName()
+                    +"你放弃了一天", habitTask.getTaskScore()));
         } else if (choice.equals("3")) {
             return;
         }else{
-            System.out.println("输入错误，请重新输入");
-            System.out.println("请输入你的操作，按下操作前的序号即可\n");
+            MenuUtils.outputMsg(Message.inputParseError);
             modifyHabitTask();
             return;
         }
-        System.out.println("修改成功");
+        MenuUtils.outputMsg(Message.successMsg);
     }
 
 }
