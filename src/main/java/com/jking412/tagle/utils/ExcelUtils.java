@@ -105,38 +105,6 @@ public class ExcelUtils {
             writeSheet = EasyExcel.writerSheet(3, "Operation").head(Operation.class).build();
             excelWriter.write(Operation.operations, writeSheet);
         }
-        Workbook workBook = null;
-        try {
-            workBook = new XSSFWorkbook(excelName);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-//        Sheet sheet = workBook.getSheet("DailyTask");
-//        autoSize(sheet,DailyTask.sheetLength);
-//        sheet = workBook.getSheet("HabitTask");
-//        autoSize(sheet,HabitTask.sheetLength);
-//        sheet = workBook.getSheet("DefinedScore");
-//        autoSize(sheet,DefinedScore.sheetLength);
-//        sheet = workBook.getSheet("Operation");
-//        autoSize(sheet,Operation.sheetLength);
-    }
-
-
-    private static void autoSize(Sheet sheet,int len){
-        // 让列宽随着导出的列长自动适应
-        for (int i = 0; i < len; i++) {
-            // 调整每一列宽度
-            sheet.autoSizeColumn(i);
-            // 解决自动设置列宽中文失效的问题，单个单元格的最大列宽为255个字符
-            int maxWith = 255 * 256;
-            int newWidth = sheet.getColumnWidth(i) * 17 / 10;
-            if (newWidth < maxWith) {
-                sheet.setColumnWidth(i, newWidth);
-            }else {
-                sheet.setColumnWidth(i, maxWith / 2);
-            }
-        }
-
     }
 
 }

@@ -5,7 +5,7 @@ import com.alibaba.excel.metadata.GlobalConfiguration;
 import com.alibaba.excel.metadata.data.ReadCellData;
 import com.alibaba.excel.metadata.data.WriteCellData;
 import com.alibaba.excel.metadata.property.ExcelContentProperty;
-import com.jking412.tagle.status.DailyTaskStatus;
+import com.jking412.tagle.tagleenum.DailyTaskStatus;
 
 public class DailyTaskConvert implements Converter<DailyTaskStatus> {
 
