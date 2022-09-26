@@ -5,7 +5,6 @@ import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.jking412.tagle.entity.readlistener.HabitTaskReadListener;
 import com.jking412.tagle.utils.DateUtils;
-import com.jking412.tagle.utils.ExcelUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -45,12 +44,7 @@ public class HabitTask {
 
     @ExcelProperty(value = "备注", index = 8)
     private String taskRemark;
-    @ExcelIgnore
-    private static int sheetNum = 1;
-    @ExcelIgnore
-    public static final int sheetLength = 9;
-    @ExcelIgnore
-    public static ArrayList<HabitTask> habitTasks;
+
 
     public HabitTask(String taskName,int targetDay){
         this.taskName = taskName;
@@ -62,10 +56,5 @@ public class HabitTask {
         this.taskScore = 25;
         this.taskLostScore = 0;
         this.taskRemark = "";
-    }
-
-    public static void readSheet() {
-        habitTasks = new ArrayList<>();
-        EasyExcel.read(ExcelUtils.excelName, HabitTask.class, new HabitTaskReadListener()).sheet(sheetNum).doRead();
     }
 }

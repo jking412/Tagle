@@ -2,14 +2,16 @@ package com.jking412.tagle.entity;
 
 
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.jking412.tagle.common.TagleExcel;
 import com.jking412.tagle.entity.readlistener.OperationReadListener;
 import com.jking412.tagle.utils.DateUtils;
-import com.jking412.tagle.utils.ExcelUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 
@@ -18,6 +20,10 @@ import java.util.ArrayList;
 @AllArgsConstructor
 @ToString
 public class Operation {
+
+    @Autowired
+    @ExcelIgnore
+    private TagleExcel tagleExcel;
 
     @ExcelProperty(value = "操作时间", index = 0)
     private String Date;
@@ -34,28 +40,16 @@ public class Operation {
     @ExcelProperty(value = "备注", index = 4)
     private String remark;
 
-    private static int sheetNum = 3;
-    public static final int sheetLength = 5;
-
-    public static ArrayList<Operation> operations;
-
     public Operation(String operation, int changedScore){
-        if(operations.size() > 0){
-            this.leftScore = operations.get(operations.size() - 1).getLeftScore();
-        }
         this.Date = DateUtils.getDate();
         this.operation = operation;
         this.changedScore = changedScore;
-        this.leftScore += changedScore;
         this.remark = "";
-    }
-
-    public static void readSheet(){
-        operations = new ArrayList<>();
-        EasyExcel.read(ExcelUtils.excelName,Operation.class,new OperationReadListener()).sheet(sheetNum).doRead();
-    }
-
-    public static void addOperation(Operation operation){
-        operations.add(operation);
+        ArrayList<Operation> operations = TagleExcel.operations;
+        if(operations.isEmpty()){
+            this.leftScore = changedScore;
+        }else{
+            this.leftScore = operations.get(operations.size() - 1).getLeftScore() + changedScore;
+        }
     }
 }
