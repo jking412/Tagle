@@ -7,7 +7,6 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.jking412.tagle.entity.readlistener.DailyTaskReadListener;
 import com.jking412.tagle.tagleenum.DailyTaskStatus;
 import com.jking412.tagle.utils.DateUtils;
-import com.jking412.tagle.utils.ExcelUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,13 +39,6 @@ public class DailyTask {
     @ExcelProperty(value = "备注", index = 5)
     private String taskRemark;
 
-    @ExcelIgnore
-    private static int sheetNum = 0;
-    @ExcelIgnore
-    public static final int sheetLength = 6;
-    @ExcelIgnore
-    public static ArrayList<DailyTask> dailyTasks;
-
     public DailyTask(String taskName){
         this.date = DateUtils.getDate();
         this.taskName = taskName;
@@ -54,11 +46,5 @@ public class DailyTask {
         this.taskGetScore = 25;
         this.taskLostScore = 0;
         this.taskRemark = "";
-    }
-
-
-    public static void readSheet(){
-        dailyTasks = new ArrayList<>();
-        EasyExcel.read(ExcelUtils.excelName,DailyTask.class,new DailyTaskReadListener()).sheet(sheetNum).doRead();
     }
 }

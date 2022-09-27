@@ -6,6 +6,7 @@ import com.alibaba.excel.metadata.data.ReadCellData;
 import com.alibaba.excel.metadata.data.WriteCellData;
 import com.alibaba.excel.metadata.property.ExcelContentProperty;
 import com.jking412.tagle.tagleenum.DailyTaskStatus;
+import org.springframework.stereotype.Component;
 
 public class DailyTaskConvert implements Converter<DailyTaskStatus> {
 

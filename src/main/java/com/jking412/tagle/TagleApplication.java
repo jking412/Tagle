@@ -1,22 +1,19 @@
 package com.jking412.tagle;
 
-import com.jking412.tagle.controller.TagleController;
-import com.jking412.tagle.entity.DailyTask;
-import com.jking412.tagle.utils.ExcelUtils;
+import com.jking412.tagle.core.TagleContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.Scanner;
 
 @SpringBootApplication
 public class TagleApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(TagleApplication.class, args);
-        ExcelUtils.InitExcel("Tagle");
-        TagleController.startTagle();
+        ConfigurableApplicationContext context = SpringApplication.run(TagleApplication.class, args);
+        TagleContext tagleContext = context.getBean(TagleContext.class);
+        tagleContext.run();
     }
 
 }
